@@ -1,30 +1,31 @@
-import { createContext, useContext, useState, useEffect } from "react";
-
+import { createContext, useContext, useState, useEffect } from 'react';
+import { APP_TOKEN_KEY } from '@/utils/Consts';
 const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
   // ví dụ state toàn cục
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("APP_TOKEN") || "");
-  const [theme, setTheme] = useState("light");
+  const [token, setToken] = useState(localStorage.getItem('APP_TOKEN') || '');
+  const [theme, setTheme] = useState('light');
 
   // lưu token vào localStorage mỗi khi thay đổi
   useEffect(() => {
-    if (token) {
-      localStorage.setItem("APP_TOKEN", token);
-    } else {
-      localStorage.removeItem("APP_TOKEN");
-    }
+    // if (token) {
+    //   localStorage.setItem(APP_TOKEN_KEY, token);
+    // } else {
+    //   localStorage.removeItem(APP_TOKEN_KEY);
+    // }
   }, [token]);
 
-  const login = (userData, jwt) => {
+  const login = (userData, token) => {
     setUser(userData);
-    setToken(jwt);
+    setToken(token);
+    localStorage.setItem(APP_TOKEN_KEY, token);
   };
 
   const logout = () => {
     setUser(null);
-    setToken("");
+    setToken('');
   };
 
   const value = {
@@ -44,6 +45,6 @@ export function AppProvider({ children }) {
 // custom hook để dùng nhanh
 export const useApp = () => {
   const ctx = useContext(AppContext);
-  if (!ctx) throw new Error("useApp must be used within AppProvider");
+  if (!ctx) throw new Error('useApp must be used within AppProvider');
   return ctx;
 };

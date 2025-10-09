@@ -1,5 +1,5 @@
 // src/services/axiosClient.js
-import axios from "axios";
+import axios from 'axios';
 
 /**
  * Simple axios client with request/response interceptors.
@@ -9,13 +9,13 @@ import axios from "axios";
  */
 
 /* ---------- configuration ---------- */
-const API_BASE = import.meta.env.VITE_API_URL || "/api";
+const API_BASE = import.meta.env.VITE_API_URL || 'http://192.168.1.4:8000/api';
 
 const axiosClient = axios.create({
   baseURL: API_BASE,
   headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
   },
   // timeout: 15000, // tùy chọn
 });
@@ -28,14 +28,14 @@ export function setAuthToken(token) {
   runtimeToken = token;
   // optionally persist:
   if (token == null) {
-    localStorage.removeItem("APP_TOKEN");
+    localStorage.removeItem('APP_TOKEN');
   } else {
-    localStorage.setItem("APP_TOKEN", token);
+    localStorage.setItem('APP_TOKEN', token);
   }
 }
 export function clearAuthToken() {
   runtimeToken = null;
-  localStorage.removeItem("APP_TOKEN");
+  localStorage.removeItem('APP_TOKEN');
 }
 
 /* ---------- auth error handler (register from AppProvider) ---------- */
@@ -48,7 +48,7 @@ export function onAuthError(fn) {
 axiosClient.interceptors.request.use(
   (config) => {
     // token priority: runtimeToken > localStorage
-    const token = runtimeToken ?? localStorage.getItem("APP_TOKEN");
+    const token = runtimeToken ?? localStorage.getItem('APP_TOKEN');
     if (token) {
       config.headers = config.headers || {};
       // set Authorization header
@@ -69,13 +69,13 @@ axiosClient.interceptors.response.use(
     // Common handling for 401 Unauthorized
     if (status === 401) {
       // call registered handler (e.g. to logout and redirect to /login)
-      if (typeof authErrorHandler === "function") {
+      if (typeof authErrorHandler === 'function') {
         try {
           authErrorHandler(error);
         } catch (e) {
           // swallow handler error
           // eslint-disable-next-line no-console
-          console.error("authErrorHandler error:", e);
+          console.error('authErrorHandler error:', e);
         }
       }
       // Optionally clear token
@@ -84,13 +84,11 @@ axiosClient.interceptors.response.use(
 
     // you can add auto-refresh-token logic here (complex) if you have refresh tokens
 
-    return Promise.reject(error);
+    return Promise.reject(error.response);
   }
 );
 
 export default axiosClient;
-
-
 
 // dùng trong AppProvider để khởi tạo runtime token và đăng ký authErrorHandler
 // import { setAuthToken, onAuthError, clearAuthToken } from "@/services/axiosClient";

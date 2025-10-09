@@ -12,23 +12,25 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|max:50|unique:users',
-            'email' => 'required|email|unique:users',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
             'password' => 'required|string|min:3',
         ]);
 
+        if (User::where('email', $request->email)->exists()) {
+            return response()->json([
+                'message' => 'Email này đã tồn tại!'
+            ], 400);
+        }
+
         $user = User::create([
-            'username' => $request->username,
+            'username' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
         return response()->json([
             'message' => 'Đăng ký thành công',
-            'user' => $user,
-            'token' => $token,
         ], 201);
     }
 

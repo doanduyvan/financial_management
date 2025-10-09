@@ -1,48 +1,57 @@
 {
-    // Cấu hình cho PHP
-    "[php]": {
-        "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
-        "editor.formatOnSave": true
-    },
-    "php.validate.executablePath": "C:/xampp/php/php.exe",
-    "intelephense.files.maxSize": 1000000,
-    "intelephense.telemetry.enabled": false,
-    "intelephense.environment.includePaths": [
-        "vendor"
-    ],
-    "php.namespaceResolver.sortAlphabetically": true,
-    "php.namespaceResolver.showMessageOnUpdate": false,
-    "php.namespaceResolver.insertUseDeclaration": true,
-    "php.namespaceResolver.enable": true,
-    // Gợi ý import path cho Laravel PHP (API)
-    "path-intellisense.autoSlashAfterDirectory": true,
-    "path-intellisense.extensionOnImport": true,
-    // Một số tiện ích chung cho code
+  // Cấu hình cho PHP
+  "[php]": {
+    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+    "editor.formatOnSave": true
+  },
+  "php.validate.executablePath": "C:/xampp/php/php.exe",
+  "intelephense.files.maxSize": 1000000,
+  "intelephense.telemetry.enabled": false,
+  "intelephense.environment.includePaths": ["vendor"],
+  "php.namespaceResolver.sortAlphabetically": true,
+  "php.namespaceResolver.showMessageOnUpdate": false,
+  "php.namespaceResolver.insertUseDeclaration": true,
+  "php.namespaceResolver.enable": true,
+  // Gợi ý import path cho Laravel PHP (API)
+  "path-intellisense.autoSlashAfterDirectory": true,
+  "path-intellisense.extensionOnImport": true,
+  // Một số tiện ích chung cho code
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {},
+  "intelephense.diagnostics.undefinedMethods": false,
+  // Tối ưu cho ReactJS + Tailwind CSS
+  "tailwindCSS.emmetCompletions": true,
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "editor.suggest.preview": true,
+  "editor.suggest.snippetsPreventQuickSuggestions": false,
+  "css.validate": false,
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html",
+    "html": "html",
+    "javascript": "javascriptreact",
+    "javascriptreact": "javascriptreact",
+    "typescript": "typescriptreact",
+    "typescriptreact": "typescriptreact"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
     "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {},
-    "intelephense.diagnostics.undefinedMethods": false,
-    // Tối ưu cho ReactJS + Tailwind CSS
-    "tailwindCSS.emmetCompletions": true,
-    "editor.quickSuggestions": {
-        "strings": true
-    },
-    "editor.suggest.preview": true,
-    "editor.suggest.snippetsPreventQuickSuggestions": false,
-    "css.validate": false,
-    "files.associations": {
-        "*.css": "tailwindcss"
-    },
-    "tailwindCSS.includeLanguages": {
-        "plaintext": "html",
-        "html": "html",
-        "javascript": "javascriptreact",
-        "javascriptreact": "javascriptreact",
-        "typescript": "typescriptreact",
-        "typescriptreact": "typescriptreact"
-    },
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "[javascript]": {
-        "editor.formatOnSave": true,
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "gitHubCopilot.enableAutoCompletions": false,
+  "editor.inlineSuggest.enabled": false,
+  "github.copilot.editor.enableAutoCompletions": false,
+  "[javascriptreact]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsx]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

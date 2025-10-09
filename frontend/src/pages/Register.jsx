@@ -1,33 +1,17 @@
-// src/pages/Login.jsx
 import { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { Form, Input, Button, Checkbox, Typography, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { login } from '@/services/auth';
-import { useApp } from '@/contexts/AppContext';
-const APP_TOKEN_KEY = 'APP_TOKEN'; // đổi nếu bạn dùng key khác
+import { APP_TOKEN_KEY } from '@/utils/Consts';
+import { useRegister } from '@/hooks/auth/useRegister';
 const { Title, Text } = Typography;
 
-export default function Login({ setIsPageLogin }) {
-  const { login } = useApp();
-
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const redirectTo = location.state?.from?.pathname || '/dashboard';
-
-  const onFinish = async (values) => {
-    setLoading(true);
-    try {
-      const res = await login(values);
-      message.success('Đăng nhập thành công');
-      login(res.data.user, res.data.token);
-      console.log(res);
-    } catch (err) {
-      message.error(err.data?.message || 'Không thể đăng nhập');
-    } finally {
-      setLoading(false);
-    }
+export default function Register({ setIsPageLogin }) {
+  const { loading, handleRegister } = useRegister();
+  const onFinish = async (data) => {
+    console.log(data);
+    const check = await handleRegister(data);
+    if (check) setIsPageLogin(true);
   };
 
   return (
@@ -37,7 +21,7 @@ export default function Login({ setIsPageLogin }) {
         <div className="w-full max-w-md bg-white/90 backdrop-blur rounded-2xl shadow-xl p-8 border">
           <div className="mb-6">
             <Title level={3} className="!m-0">
-              Đăng nhập
+              Đăng ký tài khoản
             </Title>
             <Text className="text-gray-500">
               Sử dụng email và mật khẩu của bạn
@@ -51,6 +35,18 @@ export default function Login({ setIsPageLogin }) {
             initialValues={{ remember: true }}
             requiredMark={false}
           >
+            <Form.Item
+              label="Họ Tên"
+              name="name"
+              rules={[{ required: true, message: 'Vui lòng nhập họ tên' }]}
+            >
+              <Input
+                size="large"
+                prefix={<UserOutlined className="text-gray-400" />}
+                placeholder="name"
+              />
+            </Form.Item>
+
             <Form.Item
               label="Email"
               name="email"
@@ -80,30 +76,50 @@ export default function Login({ setIsPageLogin }) {
               />
             </Form.Item>
 
-            <div className="flex items-center justify-between mb-4">
-              <Form.Item name="remember" noStyle>
-                <Checkbox checked>Ghi nhớ đăng nhập</Checkbox>
-              </Form.Item>
-            </div>
+            <Form.Item
+              label="Nhập lại mật khẩu"
+              name="confirmpassword"
+              dependencies={['password']}
+              rules={[
+                { required: true, message: 'Vui lòng nhập lại mật khẩu' },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      new Error('Mật khẩu không trùng khớp')
+                    );
+                  },
+                }),
+              ]}
+            >
+              <Input.Password
+                size="large"
+                prefix={<LockOutlined className="text-gray-400" />}
+                placeholder="••••••••"
+                autoComplete="current-password"
+              />
+            </Form.Item>
 
             <Button
               type="primary"
               htmlType="submit"
               size="large"
               loading={loading}
-              className="!w-full !h-11 !rounded-xl"
+              className="!w-full !h-11 !rounded-xl mt-5"
             >
-              Đăng nhập
+              Đăng ký
             </Button>
           </Form>
 
           <div className="mt-6 text-center text-sm text-gray-600">
-            Chưa có tài khoản?{' '}
+            Bạn đã có tài khoản?{' '}
             <button
               className="hover:text-blue-500"
-              onClick={() => setIsPageLogin(false)}
+              onClick={() => setIsPageLogin(true)}
             >
-              Đăng ký ngay
+              Đăng nhập ngay
             </button>
           </div>
         </div>
